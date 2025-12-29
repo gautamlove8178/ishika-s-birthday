@@ -19,29 +19,22 @@ html,body{
   font-family:'Poppins',sans-serif;
 }
 
-/* 🔥 Background slideshow */
+/* background slideshow */
 .slideshow{
   position:fixed;
   top:0;left:0;
   width:100%;height:100%;
   z-index:-2;
 }
-
 .slideshow img{
   position:absolute;
-  width:100%;
-  height:100%;
+  width:100%;height:100%;
   object-fit:cover;
   opacity:0;
   transition:opacity 2s ease-in-out;
 }
+.slideshow img.active{opacity:1;}
 
-/* 👇 yahi missing tha */
-.slideshow img.active{
-  opacity:1;
-}
-
-/* Dark overlay */
 .overlay{
   position:fixed;
   top:0;left:0;
@@ -49,68 +42,75 @@ html,body{
   background:rgba(0,0,0,0.55);
 }
 
-/* Center content */
-.content{
+.center{
   position:relative;
   height:100%;
   display:flex;
   flex-direction:column;
-  justify-content:center;
   align-items:center;
+  justify-content:center;
   text-align:center;
   padding:15px;
 }
 
-.glow{
-  font-family:'Great Vibes',cursive;
-  font-size:45px;
-  color:#ffb6ff;
-  text-shadow:0 0 15px #ff4dff,0 0 30px #ff00ff;
-  animation:pulse 2.5s infinite alternate;
-}
-
-@keyframes pulse{
-  from{transform:scale(0.97)}
-  to{transform:scale(1.04)}
-}
-
-/* Romantic text */
-.message{
-  margin-top:18px;
-  max-width:800px;
-  font-size:19px;
-  line-height:1.7;
-  text-shadow:0 0 10px rgba(255,255,255,.4);
-}
-
-/* 💖 Start button */
+/* start button */
 .start-btn{
-  margin-top:25px;
-  padding:12px 26px;
+  padding:14px 30px;
   border:none;
-  font-size:17px;
+  font-size:18px;
   border-radius:40px;
   background:linear-gradient(45deg,#ff0099,#ff00ff,#ff3399);
   color:white;
   cursor:pointer;
-  box-shadow:0 0 20px #ff00ff;
+  box-shadow:0 0 25px #ff00ff;
 }
 
-/* hearts glow */
-.heart{
-  animation:beat 1.5s infinite;
+/* message */
+.message{
+  font-size:20px;
+  max-width:800px;
+  line-height:1.8;
+  display:none;
 }
-@keyframes beat{
-  0%{transform:scale(1)}
-  50%{transform:scale(1.25)}
-  100%{transform:scale(1)}
+
+/* ✍️ handwriting name animation */
+.name-draw{
+  font-family:'Great Vibes',cursive;
+  font-size:80px;
+  fill:none;
+  stroke:#ff9fff;
+  stroke-width:2.2;
+  stroke-linejoin:round;
+  stroke-linecap:round;
+  filter:drop-shadow(0 0 8px #ff00ff);
+  animation:draw 5s ease forwards, glow 2s infinite alternate;
+  display:none;
+}
+
+@keyframes draw{
+  from{stroke-dasharray:900;stroke-dashoffset:900;}
+  to{stroke-dasharray:900;stroke-dashoffset:0;}
+}
+
+@keyframes glow{
+  from{filter:drop-shadow(0 0 3px #ff00ff);}
+  to{filter:drop-shadow(0 0 18px #ff00ff);}
+}
+
+/* final text big */
+.big{
+  font-family:'Great Vibes',cursive;
+  font-size:75px;
+  color:#ffb6ff;
+  text-shadow:0 0 20px #ff4dff,0 0 40px #ff00ff;
+  display:none;
 }
 </style>
 </head>
 
 <body>
 
-<!-- Background Slideshow -->
+<!-- slideshow -->
 <div class="slideshow">
   <img src="1.jpg" class="active">
   <img src="2.jpg">
@@ -120,55 +120,84 @@ html,body{
 
 <div class="overlay"></div>
 
-<div class="content">
+<div class="center">
 
-  <div class="glow">Happy New Year, Ishika 💖</div>
-
-  <div id="text" class="message">
-    Ishika… ek naya saal shuru ho raha hai,<br>
-    par Kartik ka pyaar bilkul wahi hai — aur thoda zyada 💕
-  </div>
-
-  <!-- 🔥 tumhara button text -->
-  <button class="start-btn" onclick="startEverything()">
-    Start karo meri bbu 💖
+  <!-- first only this -->
+  <button id="startBtn" class="start-btn">
+    Start kari meri bbu 💖
   </button>
+
+  <!-- handwriting animated name -->
+  <svg id="nameSvg" width="400" height="150" class="name-draw" viewBox="0 0 400 150">
+    <text x="50" y="100">Ishika</text>
+  </svg>
+
+  <!-- messages -->
+  <div id="msg" class="message"></div>
+
+  <!-- final -->
+  <div id="final" class="big">
+    Happy New Year, Ishika 💖
+  </div>
 
   <audio id="music" src="newyear.mp3"></audio>
 </div>
 
 <script>
-// 🔥 slideshow working 100%
 let slides=document.querySelectorAll(".slideshow img");
 let index=0;
 
-setInterval(()=>{
-  slides[index].classList.remove("active");
-  index=(index+1)%slides.length;
-  slides[index].classList.add("active");
-},4000);
-
-// 💕 Romantic lines
 const lines=[
-  "Ishika… tum ho to saal nahi, zindagi khoobsurat lagti hai ✨",
-  "Har subah ek hi dua hoti hai — tum hamesha muskuraati raho ❤️",
-  "Kartik ke liye sabse khoobsurat cheez ho tum 💖",
-  "Door rehkar bhi dil ke sabse kareeb tum hi ho 💫",
-  "Happy New Year Ishika — forever yours, Kartik 💝"
+  "Ishika… tum ho to har pal khoobsurat lagta hai ✨",
+  "Naya saal nahi… nayi umeede ho tum ❤️",
+  "Kartik ki har dua ka pehla lafz — Ishika 💖",
+  "Bas saath chahiye, zindagi apne aap khoobsurat ho jayegi 💫"
 ];
 
-let t=0;
-setInterval(()=>{
-  document.getElementById("text").innerHTML=lines[t];
-  t=(t+1)%lines.length;
-},4200);
+let mIndex=0;
 
-// ▶️ Music play + effects start
+/* START ALL */
 function startEverything(){
+
+  // hide button
+  document.getElementById("startBtn").style.display="none";
+
+  // play music
   let m=document.getElementById("music");
-  m.volume=0.85;
+  m.volume=0.9;
   m.play().catch(()=>{});
+
+  // show animated name
+  const nameSvg=document.getElementById("nameSvg");
+  nameSvg.style.display="block";
+
+  // after handwriting completes → show messages
+  setTimeout(()=>{
+    nameSvg.style.display="none";
+    let msg=document.getElementById("msg");
+    msg.style.display="block";
+
+    let messageInterval=setInterval(()=>{
+      if(mIndex<lines.length){
+        msg.innerHTML=lines[mIndex];
+        mIndex++;
+      }else{
+        msg.style.display="none";
+        document.getElementById("final").style.display="block";
+        clearInterval(messageInterval);
+      }
+    },7000);
+  },5200); // wait for name animation to finish
+
+  // background start
+  setInterval(()=>{
+    slides[index].classList.remove("active");
+    index=(index+1)%slides.length;
+    slides[index].classList.add("active");
+  },4000);
 }
+
+document.getElementById("startBtn").onclick=startEverything;
 </script>
 
 </body>

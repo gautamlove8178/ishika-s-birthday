@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Happy New Year — Ishika 💖</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+
+body,html{
+  width:100%;
+  height:100%;
+  overflow:hidden;
+  background:#000;
+  color:white;
+  font-family:'Poppins',sans-serif;
+}
+
+/* Background slideshow */
+.slideshow{
+  position:fixed;
+  top:0;left:0;
+  width:100%;height:100%;
+  z-index:-1;
+}
+
+.slideshow img{
+  position:absolute;
+  width:100%;height:100%;
+  object-fit:cover;
+  opacity:0;
+  transition:opacity 2s linear;
+}
+
+/* Dark overlay */
+.overlay{
+  position:fixed;
+  top:0;left:0;
+  width:100%;height:100%;
+  background:rgba(0,0,0,0.55);
+}
+
+/* Center text */
+.content{
+  position:relative;
+  height:100%;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  padding:20px;
+}
+
+.glow{
+  font-family:'Great Vibes',cursive;
+  font-size:42px;
+  color:#ffb6ff;
+  text-shadow:0 0 10px #ff69ff, 0 0 25px #ff00ff;
+  animation:pulse 2.5s infinite alternate;
+}
+
+@keyframes pulse{
+  from{transform:scale(0.97)}
+  to{transform:scale(1.03)}
+}
+
+/* Lines text */
+.message{
+  margin-top:25px;
+  max-width:800px;
+  font-size:19px;
+  line-height:1.7;
+  text-shadow:0 0 10px rgba(255,255,255,0.3);
+  animation:fadeMsg 2s ease forwards;
+}
+
+@keyframes fadeMsg{
+  from{opacity:0;transform:translateY(20px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+/* Tap button */
+.start-btn{
+  margin-top:25px;
+  padding:12px 22px;
+  border:none;
+  background:linear-gradient(45deg,#ff0080,#ff00ff,#ff4dd2);
+  color:white;
+  font-size:18px;
+  border-radius:35px;
+  cursor:pointer;
+  box-shadow:0 0 20px #ff00ff;
+}
+
+.heart{
+  font-size:22px;
+  animation:beat 1.5s infinite;
+}
+
+@keyframes beat{
+  0%{transform:scale(1)}
+  50%{transform:scale(1.25)}
+  100%{transform:scale(1)}
+}
+
+/* Firefly/particles */
+.firefly{
+  position:fixed;
+  width:6px;height:6px;
+  background:#fff;
+  border-radius:50%;
+  box-shadow:0 0 10px #fff;
+  animation:fly 10s linear infinite;
+}
+
+@keyframes fly{
+  from{transform:translateY(100vh)}
+  to{transform:translateY(-10vh)}
+}
+</style>
+</head>
+
+<body>
+
+<!-- Background Slideshow -->
+<div class="slideshow">
+  <img src="1.jpg" class="bg active">
+  <img src="2.jpg" class="bg">
+  <img src="3.jpg" class="bg">
+  <img src="4.jpg" class="bg">
+</div>
+
+<div class="overlay"></div>
+
+<div class="content">
+  <div class="glow">Happy New Year, Ishika 💖</div>
+
+  <div id="text" class="message">
+    Ishika… naya saal ho ya purana,
+    ek cheez kabhi nahi badlegi —
+    <b>tumhare liye Kartik ka pyaar 💕</b>
+  </div>
+
+  <button class="start-btn" onclick="startEverything()">Tap here to feel it ✨</button>
+
+  <audio id="music" src="newyear.mp3"></audio>
+</div>
+
+<script>
+// background slideshow
+let imgs=document.querySelectorAll(".slideshow img");
+let i=0;
+setInterval(()=>{
+  imgs.forEach(img=>img.style.opacity=0);
+  imgs[i].style.opacity=1;
+  i=(i+1)%imgs.length;
+},4000);
+
+// romantic lines for Ishika
+const lines=[
+`Ishika… tumhara naam hi dil ko sukoon de deta hai 💫`,
+`Naya saal sirf tab khoobsurat hai… jab tum saath ho ❤️`,
+`Tumhari hansi se zyada khoobsurat kuch nahi lagta mujhe 🥺`,
+`Har dua me bas tumhara naam hi aata hai, Ishika 💖`,
+`Happy New Year Ishika — forever yours, Kartik 💝`
+];
+
+let idx=0;
+function showNextLine(){
+  document.getElementById("text").innerHTML=lines[idx];
+  idx=(idx+1)%lines.length;
+}
+setInterval(showNextLine,4200);
+
+// start button
+function startEverything(){
+  let music=document.getElementById("music");
+  music.volume=0.8;
+  music.play().catch(()=>{});
+}
+
+// fireflies
+for(let j=0;j<25;j++){
+  let f=document.createElement("div");
+  f.className="firefly";
+  f.style.left=Math.random()*100+"vw";
+  f.style.animationDuration=(6+Math.random()*6)+"s";
+  document.body.appendChild(f);
+}
+</script>
+
+</body>
+</html>

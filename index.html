@@ -24,7 +24,7 @@ html,body{
   position:fixed;
   top:0;left:0;
   width:100%;height:100%;
-  z-index:-2;
+  z-index:-3;
 }
 .slideshow img{
   position:absolute;
@@ -40,8 +40,20 @@ html,body{
   top:0;left:0;
   width:100%;height:100%;
   background:rgba(0,0,0,0.55);
+  z-index:-2;
 }
 
+/* fireworks canvas */
+#fireCanvas{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  z-index:-1;
+}
+
+/* main content */
 .center{
   position:relative;
   height:100%;
@@ -63,20 +75,34 @@ html,body{
   color:white;
   cursor:pointer;
   box-shadow:0 0 25px #ff00ff;
+  animation:pulseBtn 1.8s infinite;
 }
 
-/* message */
+@keyframes pulseBtn{
+  0%{transform:scale(1)}
+  50%{transform:scale(1.08)}
+  100%{transform:scale(1)}
+}
+
+/* message animated */
 .message{
-  font-size:20px;
-  max-width:800px;
-  line-height:1.8;
+  font-size:22px;
+  max-width:850px;
+  line-height:1.9;
   display:none;
+  text-shadow:0 0 15px rgba(255,255,255,0.5);
+  animation:fadeUp 1s ease forwards;
+}
+
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(30px) scale(.95)}
+  to{opacity:1;transform:translateY(0) scale(1)}
 }
 
 /* ✍️ handwriting name animation */
 .name-draw{
   font-family:'Great Vibes',cursive;
-  font-size:80px;
+  font-size:85px;
   fill:none;
   stroke:#ff9fff;
   stroke-width:2.2;
@@ -97,13 +123,20 @@ html,body{
   to{filter:drop-shadow(0 0 18px #ff00ff);}
 }
 
-/* final text big */
+/* final text big with pop-in */
 .big{
   font-family:'Great Vibes',cursive;
-  font-size:75px;
+  font-size:90px;
   color:#ffb6ff;
   text-shadow:0 0 20px #ff4dff,0 0 40px #ff00ff;
   display:none;
+  animation:pop 1.5s ease forwards;
+}
+
+@keyframes pop{
+  0%{opacity:0;transform:scale(0.4)}
+  70%{opacity:1;transform:scale(1.1)}
+  100%{transform:scale(1)}
 }
 </style>
 </head>
@@ -120,11 +153,13 @@ html,body{
 
 <div class="overlay"></div>
 
+<canvas id="fireCanvas"></canvas>
+
 <div class="center">
 
-  <!-- first only this -->
+  <!-- start button -->
   <button id="startBtn" class="start-btn">
-    Start kari meri bbu 💖
+    Start karo meri bbu 💖
   </button>
 
   <!-- handwriting animated name -->
@@ -144,14 +179,16 @@ html,body{
 </div>
 
 <script>
+/* slideshow */
 let slides=document.querySelectorAll(".slideshow img");
 let index=0;
 
+/* messages */
 const lines=[
   "Ishika… tum ho to har pal khoobsurat lagta hai ✨",
-  "Naya saal nahi… nayi umeede ho tum ❤️",
-  "Kartik ki har dua ka pehla lafz — Ishika 💖",
-  "Bas saath chahiye, zindagi apne aap khoobsurat ho jayegi 💫"
+  "Dil se nikalti ek hi dua — tum hamesha muskuraati raho ❤️",
+  "Kartik ki duniya ka sabse pyaara hissa ho tum 💖",
+  "Is saal nahi… har saal sirf tum hi tum 💫"
 ];
 
 let mIndex=0;
@@ -159,19 +196,24 @@ let mIndex=0;
 /* START ALL */
 function startEverything(){
 
-  // hide button
   document.getElementById("startBtn").style.display="none";
 
-  // play music
   let m=document.getElementById("music");
   m.volume=0.9;
   m.play().catch(()=>{});
 
-  // show animated name
+  // handwriting name
   const nameSvg=document.getElementById("nameSvg");
   nameSvg.style.display="block";
 
-  // after handwriting completes → show messages
+  // slideshow start
+  setInterval(()=>{
+    slides[index].classList.remove("active");
+    index=(index+1)%slides.length;
+    slides[index].classList.add("active");
+  },4000);
+
+  // after name animation → messages
   setTimeout(()=>{
     nameSvg.style.display="none";
     let msg=document.getElementById("msg");
@@ -180,6 +222,9 @@ function startEverything(){
     let messageInterval=setInterval(()=>{
       if(mIndex<lines.length){
         msg.innerHTML=lines[mIndex];
+        msg.style.animation="none";
+        void msg.offsetWidth;
+        msg.style.animation="fadeUp 1s ease forwards";
         mIndex++;
       }else{
         msg.style.display="none";
@@ -187,17 +232,64 @@ function startEverything(){
         clearInterval(messageInterval);
       }
     },7000);
-  },5200); // wait for name animation to finish
 
-  // background start
-  setInterval(()=>{
-    slides[index].classList.remove("active");
-    index=(index+1)%slides.length;
-    slides[index].classList.add("active");
-  },4000);
+  },5200);
+
+  startFireworks();
 }
 
 document.getElementById("startBtn").onclick=startEverything;
+
+/* 🎆 FIREWORKS EFFECT */
+function startFireworks(){
+  const canvas=document.getElementById("fireCanvas");
+  const ctx=canvas.getContext("2d");
+
+  canvas.width=innerWidth;
+  canvas.height=innerHeight;
+
+  let particles=[];
+
+  function Firework(x,y){
+    for(let i=0;i<60;i++){
+      particles.push({
+        x:x,
+        y:y,
+        vx:(Math.random()-0.5)*6,
+        vy:(Math.random()-0.5)*6,
+        alpha:1,
+        size:Math.random()*2+1
+      });
+    }
+  }
+
+  function animate(){
+    ctx.fillStyle="rgba(0,0,0,0.15)";
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+
+    particles.forEach((p,i)=>{
+      p.x+=p.vx;
+      p.y+=p.vy;
+      p.alpha-=0.01;
+
+      ctx.beginPath();
+      ctx.globalAlpha=p.alpha;
+      ctx.arc(p.x,p.y,p.size,0,Math.PI*2);
+      ctx.fillStyle="rgb(255,200,255)";
+      ctx.fill();
+
+      if(p.alpha<=0) particles.splice(i,1);
+    });
+
+    requestAnimationFrame(animate);
+  }
+
+  setInterval(()=>{
+    Firework(Math.random()*canvas.width,Math.random()*canvas.height/1.3);
+  },700);
+
+  animate();
+}
 </script>
 
 </body>

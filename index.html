@@ -5,7 +5,7 @@
 <title>Happy New Year — Ishika 💖</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Great Vibes&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
@@ -19,37 +19,55 @@ html,body{
   font-family:'Poppins',sans-serif;
 }
 
-/* background slideshow */
-.slideshow{
+/* 🩷 NEW BACKGROUND FROM 2nd CODE */
+#slideshow{
   position:fixed;
   top:0;left:0;
-  width:100%;height:100%;
+  width:100%;
+  height:100%;
+  overflow:hidden;
   z-index:-3;
 }
-.slideshow img{
+
+#slideshow img{
   position:absolute;
-  width:100%;height:100%;
+  width:110%;
+  height:110%;
   object-fit:cover;
   opacity:0;
-  transition:opacity 2s ease-in-out;
+  transition:opacity 2s ease, transform 6s ease;
 }
-.slideshow img.active{opacity:1;}
 
-.overlay{
-  position:fixed;
-  top:0;left:0;
-  width:100%;height:100%;
-  background:rgba(0,0,0,0.55);
+/* fade + zoom effect */
+#slideshow img.active{
+  opacity:1;
+  transform:scale(1.15);
+}
+
+/* soft glow light leak */
+.light-leak{
+  position:absolute;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:radial-gradient(circle at 30% 30%, rgba(255,0,128,0.3), transparent 70%);
+  mix-blend-mode:screen;
+  animation:leak 8s infinite;
   z-index:-2;
+}
+
+@keyframes leak{
+  0%{opacity:0.2}
+  50%{opacity:0.6}
+  100%{opacity:0.2}
 }
 
 /* fireworks canvas */
 #fireCanvas{
   position:fixed;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
+  top:0;left:0;
+  width:100%;height:100%;
   z-index:-1;
 }
 
@@ -99,7 +117,7 @@ html,body{
   to{opacity:1;transform:translateY(0) scale(1)}
 }
 
-/* ✍️ handwriting name animation */
+/* ✍️ handwriting name */
 .name-draw{
   font-family:'Great Vibes',cursive;
   font-size:85px;
@@ -123,7 +141,7 @@ html,body{
   to{filter:drop-shadow(0 0 18px #ff00ff);}
 }
 
-/* final text big with pop-in */
+/* final big text */
 .big{
   font-family:'Great Vibes',cursive;
   font-size:90px;
@@ -143,34 +161,29 @@ html,body{
 
 <body>
 
-<!-- slideshow -->
-<div class="slideshow">
+<!-- ⭐ NEW CINEMATIC BACKGROUND -->
+<div id="slideshow">
   <img src="1.jpg" class="active">
   <img src="2.jpg">
   <img src="3.jpg">
   <img src="4.jpg">
+  <div class="light-leak"></div>
 </div>
-
-<div class="overlay"></div>
 
 <canvas id="fireCanvas"></canvas>
 
 <div class="center">
 
-  <!-- start button -->
   <button id="startBtn" class="start-btn">
     Start karo meri bbu 💖
   </button>
 
-  <!-- handwriting animated name -->
   <svg id="nameSvg" width="400" height="150" class="name-draw" viewBox="0 0 400 150">
     <text x="50" y="100">Ishika</text>
   </svg>
 
-  <!-- messages -->
   <div id="msg" class="message"></div>
 
-  <!-- final -->
   <div id="final" class="big">
     Happy New Year, Ishika 💖
   </div>
@@ -179,9 +192,15 @@ html,body{
 </div>
 
 <script>
-/* slideshow */
-let slides=document.querySelectorAll(".slideshow img");
-let index=0;
+/* ⭐ background slideshow from 2nd code */
+let slideIndex=0;
+const slides=document.querySelectorAll("#slideshow img");
+
+setInterval(()=>{
+  slides[slideIndex].classList.remove("active");
+  slideIndex=(slideIndex+1)%slides.length;
+  slides[slideIndex].classList.add("active");
+},6000);
 
 /* messages */
 const lines=[
@@ -193,7 +212,6 @@ const lines=[
 
 let mIndex=0;
 
-/* START ALL */
 function startEverything(){
 
   document.getElementById("startBtn").style.display="none";
@@ -202,20 +220,12 @@ function startEverything(){
   m.volume=0.9;
   m.play().catch(()=>{});
 
-  // handwriting name
   const nameSvg=document.getElementById("nameSvg");
   nameSvg.style.display="block";
 
-  // slideshow start
-  setInterval(()=>{
-    slides[index].classList.remove("active");
-    index=(index+1)%slides.length;
-    slides[index].classList.add("active");
-  },4000);
-
-  // after name animation → messages
   setTimeout(()=>{
     nameSvg.style.display="none";
+
     let msg=document.getElementById("msg");
     msg.style.display="block";
 
@@ -240,7 +250,7 @@ function startEverything(){
 
 document.getElementById("startBtn").onclick=startEverything;
 
-/* 🎆 FIREWORKS EFFECT */
+/* 🎆 fireworks (tumhare first code wale) */
 function startFireworks(){
   const canvas=document.getElementById("fireCanvas");
   const ctx=canvas.getContext("2d");
@@ -253,8 +263,7 @@ function startFireworks(){
   function Firework(x,y){
     for(let i=0;i<60;i++){
       particles.push({
-        x:x,
-        y:y,
+        x:x,y:y,
         vx:(Math.random()-0.5)*6,
         vy:(Math.random()-0.5)*6,
         alpha:1,
@@ -291,6 +300,5 @@ function startFireworks(){
   animate();
 }
 </script>
-
 </body>
 </html>

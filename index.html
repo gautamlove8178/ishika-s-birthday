@@ -106,7 +106,7 @@
 
   #finalHeart{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(0);width:260px;height:260px;background:radial-gradient(circle at 30% 30%,#ff4da6,#ff1a75);clip-path:path("M130 230 L20 120 A55 55 0 0 1 130 40 A55 55 0 0 1 240 120 Z");transition:transform 1s ease;z-index:10}
 
-  canvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:-1} /* Below content */
+  canvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:-1} /* Below content, above slideshow */
 </style>
 <!-- Fonts -->
 <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
@@ -237,8 +237,7 @@ function startFireworks(){
   }
 
   function animate(){
-    ctx.fillStyle="rgba(0,0,0,0.05)"; // Reduced alpha to not cover much
-    ctx.fillRect(0,0,canvas.width,canvas.height);
+    ctx.clearRect(0,0,canvas.width,canvas.height); // Clear canvas each frame
     particles.forEach((p,i)=>{
       p.x+=p.vx;
       p.y+=p.vy;

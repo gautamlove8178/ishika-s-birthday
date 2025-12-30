@@ -169,16 +169,19 @@ function startEverything(){
     let messageInterval=setInterval(()=>{
       if(mIndex<lines.length){
         msg.innerHTML=lines[mIndex];
+        msg.style.display="block";
         msg.style.animation="none";
         void msg.offsetWidth;
         msg.style.animation="fadeUp 1s ease forwards";
+        // Add hearts during messages
+        for(let i=0;i<6;i++) setTimeout(spawnHeart, i*300);
         mIndex++;
       }else{
         msg.style.display="none";
         document.getElementById("final").style.display="block";
         clearInterval(messageInterval);
       }
-    },7000);
+    },5000); // Reduced to 5s
 
   },5200);
 

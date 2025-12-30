@@ -8,10 +8,10 @@
   body{overflow:hidden;font-family:'Segoe UI',sans-serif;background:#000;color:#fff;height:100vh}
 
   /* Slideshow full screen with fallback background */
-  #slideshow{position:fixed;top:0;left:0;width:100%;height:100%;overflow:hidden;z-index:-2;background:linear-gradient(45deg,#ff0099,#ff00ff,#ff3399); /* Fallback if images don't load */}
+  #slideshow{position:fixed;top:0;left:0;width:100%;height:100%;overflow:hidden;z-index:-3;background:linear-gradient(45deg,#ff0099,#ff00ff,#ff3399); /* Fallback if images don't load */}
   #slideshow img{position:absolute;width:110%;height:110%;object-fit:cover;opacity:0;transition:opacity 2s ease,transform 6s ease}
   #slideshow img.active{opacity:1;transform:scale(1.15)}
-  .light-leak{position:absolute;top:0;left:0;width:100%;height:100%;background:radial-gradient(circle at 30% 30%, rgba(255,0,128,0.3), transparent 70%);mix-blend-mode:screen;animation:leak 8s infinite;z-index:-1}
+  .light-leak{position:absolute;top:0;left:0;width:100%;height:100%;background:radial-gradient(circle at 30% 30%, rgba(255,0,128,0.3), transparent 70%);mix-blend-mode:screen;animation:leak 8s infinite;z-index:-2}
   @keyframes leak{0%{opacity:0.2}50%{opacity:0.6}100%{opacity:0.2}}
 
   /* Center container for content */
@@ -24,7 +24,7 @@
     justify-content:center;
     text-align:center;
     padding:15px;
-    z-index:1; /* Ensure above slideshow */
+    z-index:1; /* Above slideshow and fireworks */
   }
 
   /* Start button */
@@ -106,7 +106,7 @@
 
   #finalHeart{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(0);width:260px;height:260px;background:radial-gradient(circle at 30% 30%,#ff4da6,#ff1a75);clip-path:path("M130 230 L20 120 A55 55 0 0 1 130 40 A55 55 0 0 1 240 120 Z");transition:transform 1s ease;z-index:10}
 
-  canvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none}
+  canvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:-1} /* Below content */
 </style>
 <!-- Fonts -->
 <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
@@ -237,7 +237,7 @@ function startFireworks(){
   }
 
   function animate(){
-    ctx.fillStyle="rgba(0,0,0,0.15)";
+    ctx.fillStyle="rgba(0,0,0,0.05)"; // Reduced alpha to not cover much
     ctx.fillRect(0,0,canvas.width,canvas.height);
     particles.forEach((p,i)=>{
       p.x+=p.vx;
@@ -266,7 +266,7 @@ function spawnFirework(x,y){
   for(let i=0;i<40;i++){
     const angle=Math.random()*2*Math.PI;
     const speed=Math.random()*5+2;
-    // Add to particles array if needed, but since startFireworks handles it, maybe skip or integrate
+    // Particles are added in startFireworks
   }
 }
 </script>

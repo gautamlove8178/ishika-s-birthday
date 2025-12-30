@@ -5,7 +5,7 @@
 <title>Happy New Year — Ishika 💖</title>
 <style>
   *{margin:0;padding:0;box-sizing:border-box}
-  body{overflow:hidden;font-family:'Segoe UI',sans-serif;background:#000;color:#fff;height:100vh}
+  body{overflow:hidden;font-family:'Segoe UI',sans-serif;background:#000;color:#fff;height:100vh;text-align:center} /* Added text-align:center */
   #slideshow{position:fixed;top:0;left:0;width:100%;height:100%;overflow:hidden;z-index:-2}
   #slideshow img{position:absolute;width:110%;height:110%;object-fit:cover;opacity:0;transition:opacity 2s ease,transform 6s ease}
   #slideshow img.active{opacity:1;transform:scale(1.15)}
@@ -20,11 +20,36 @@
     display:none;
     text-shadow:0 0 15px rgba(255,255,255,0.5);
     animation:fadeUp 1s ease forwards;
+    margin:0 auto; /* Ensure centered */
   }
 
   @keyframes fadeUp{
     from{opacity:0;transform:translateY(30px) scale(.95)}
     to{opacity:1;transform:translateY(0) scale(1)}
+  }
+
+  /* Copied from second code: handwriting name */
+  .name-draw{
+    font-family:'Great Vibes',cursive;
+    font-size:85px;
+    fill:none;
+    stroke:#ff9fff;
+    stroke-width:2.2;
+    stroke-linejoin:round;
+    stroke-linecap:round;
+    filter:drop-shadow(0 0 8px #ff00ff);
+    animation:draw 5s ease forwards, glow 2s infinite alternate;
+    display:none;
+  }
+
+  @keyframes draw{
+    from{stroke-dasharray:900;stroke-dashoffset:900;}
+    to{stroke-dasharray:900;stroke-dashoffset:0;}
+  }
+
+  @keyframes glow{
+    from{filter:drop-shadow(0 0 3px #ff00ff);}
+    to{filter:drop-shadow(0 0 18px #ff00ff);}
   }
 
   /* Copied from second code: final big text */
@@ -35,6 +60,7 @@
     text-shadow:0 0 20px #ff4dff,0 0 40px #ff00ff;
     display:none;
     animation:pop 1.5s ease forwards;
+    margin:0 auto; /* Ensure centered */
   }
 
   @keyframes pop{
@@ -83,6 +109,11 @@
 <button id="startBtn">Start the Magic 💖</button>
 <audio id="bgMusic" src="sorry.mp3" loop></audio>
 
+<!-- Copied from second code: SVG for handwritten name -->
+<svg id="nameSvg" width="400" height="150" class="name-draw" viewBox="0 0 400 150">
+  <text x="50" y="100">Ishika</text>
+</svg>
+
 <!-- Copied from second code: message div -->
 <div id="msg" class="message"></div>
 
@@ -102,6 +133,7 @@ const lines=[
   "Is saal nahi… har saal sirf tum hi tum 💫"
 ];
 
+const nameSvg=document.getElementById("nameSvg");
 const msg=document.getElementById("msg");
 const finalHeart=document.getElementById("finalHeart");
 const final=document.getElementById("final");
@@ -111,7 +143,20 @@ const music=document.getElementById("bgMusic");
 let mIndex=0;
 let started=false;
 
-// Modified showMessage to use second code's style: display messages with fadeUp, interval like second
+// Modified to include name draw first, then messages like second code
+function startEverything(){
+  document.getElementById("startBtn").style.display="none";
+  music.volume=0.9;
+  music.play().catch(()=>{});
+
+  nameSvg.style.display="block";
+
+  setTimeout(()=>{
+    nameSvg.style.display="none";
+    showMessage();
+  },5200);
+}
+
 function showMessage(){
   if(mIndex<lines.length){
     msg.innerHTML=lines[mIndex];
@@ -121,7 +166,7 @@ function showMessage(){
     msg.style.animation="fadeUp 1s ease forwards";
     for(let i=0;i<6;i++) setTimeout(spawnHeart, i*300);
     mIndex++;
-    setTimeout(showMessage,7000); // adjusted to match second code's interval
+    setTimeout(showMessage,7000);
   }else{
     setTimeout(showFinal,2500);
   }
@@ -188,13 +233,7 @@ function drawFireworks(){
 drawFireworks();
 
 // Start button click
-startBtn.addEventListener("click",()=>{
-  if(started) return;
-  started=true;
-  startBtn.style.display="none";
-  music.play();
-  showMessage();
-});
+startBtn.addEventListener("click",startEverything);
 </script>
 </body>
 </html>

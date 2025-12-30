@@ -3,165 +3,75 @@
 <head>
 <meta charset="UTF-8">
 <title>Happy New Year — Ishika 💖</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<link href="https://fonts.googleapis.com/css2?family=Great Vibes&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{overflow:hidden;font-family:'Segoe UI',sans-serif;background:#000;color:#fff;height:100vh}
+  #slideshow{position:fixed;top:0;left:0;width:100%;height:100%;overflow:hidden;z-index:-2}
+  #slideshow img{position:absolute;width:110%;height:110%;object-fit:cover;opacity:0;transition:opacity 2s ease,transform 6s ease}
+  #slideshow img.active{opacity:1;transform:scale(1.15)}
+  .light-leak{position:absolute;top:0;left:0;width:100%;height:100%;background:radial-gradient(circle at 30% 30%, rgba(255,0,128,0.3), transparent 70%);mix-blend-mode:screen;animation:leak 8s infinite;z-index:-1}
+  @keyframes leak{0%{opacity:0.2}50%{opacity:0.6}100%{opacity:0.2}}
 
-html,body{
-  width:100%;
-  height:100%;
-  overflow:hidden;
-  background:black;
-  color:white;
-  font-family:'Poppins',sans-serif;
-}
+  /* Copied from second code: message animated */
+  .message{
+    font-size:22px;
+    max-width:850px;
+    line-height:1.9;
+    display:none;
+    text-shadow:0 0 15px rgba(255,255,255,0.5);
+    animation:fadeUp 1s ease forwards;
+  }
 
-/* 🩷 NEW BACKGROUND FROM 2nd CODE */
-#slideshow{
-  position:fixed;
-  top:0;left:0;
-  width:100%;
-  height:100%;
-  overflow:hidden;
-  z-index:-3;
-}
+  @keyframes fadeUp{
+    from{opacity:0;transform:translateY(30px) scale(.95)}
+    to{opacity:1;transform:translateY(0) scale(1)}
+  }
 
-#slideshow img{
-  position:absolute;
-  width:110%;
-  height:110%;
-  object-fit:cover;
-  opacity:0;
-  transition:opacity 2s ease, transform 6s ease;
-}
+  /* Copied from second code: final big text */
+  .big{
+    font-family:'Great Vibes',cursive;
+    font-size:90px;
+    color:#ffb6ff;
+    text-shadow:0 0 20px #ff4dff,0 0 40px #ff00ff;
+    display:none;
+    animation:pop 1.5s ease forwards;
+  }
 
-/* fade + zoom effect */
-#slideshow img.active{
-  opacity:1;
-  transform:scale(1.15);
-}
+  @keyframes pop{
+    0%{opacity:0;transform:scale(0.4)}
+    70%{opacity:1;transform:scale(1.1)}
+    100%{transform:scale(1)}
+  }
 
-/* soft glow light leak */
-.light-leak{
-  position:absolute;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
-  background:radial-gradient(circle at 30% 30%, rgba(255,0,128,0.3), transparent 70%);
-  mix-blend-mode:screen;
-  animation:leak 8s infinite;
-  z-index:-2;
-}
+  .heart{position:fixed;font-size:24px;animation:fly 5s linear forwards}
+  @keyframes fly{from{transform:translateY(0) scale(1);opacity:1}to{transform:translateY(-120vh) scale(1.8);opacity:0}}
 
-@keyframes leak{
-  0%{opacity:0.2}
-  50%{opacity:0.6}
-  100%{opacity:0.2}
-}
+  #finalHeart{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(0);width:260px;height:260px;background:radial-gradient(circle at 30% 30%,#ff4da6,#ff1a75);clip-path:path("M130 230 L20 120 A55 55 0 0 1 130 40 A55 55 0 0 1 240 120 Z");transition:transform 1s ease;z-index:10}
 
-/* fireworks canvas */
-#fireCanvas{
-  position:fixed;
-  top:0;left:0;
-  width:100%;height:100%;
-  z-index:-1;
-}
-
-/* main content */
-.center{
-  position:relative;
-  height:100%;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  text-align:center;
-  padding:15px;
-}
-
-/* start button */
-.start-btn{
-  padding:14px 30px;
-  border:none;
-  font-size:18px;
-  border-radius:40px;
-  background:linear-gradient(45deg,#ff0099,#ff00ff,#ff3399);
-  color:white;
-  cursor:pointer;
-  box-shadow:0 0 25px #ff00ff;
-  animation:pulseBtn 1.8s infinite;
-}
-
-@keyframes pulseBtn{
-  0%{transform:scale(1)}
-  50%{transform:scale(1.08)}
-  100%{transform:scale(1)}
-}
-
-/* message animated */
-.message{
-  font-size:22px;
-  max-width:850px;
-  line-height:1.9;
-  display:none;
-  text-shadow:0 0 15px rgba(255,255,255,0.5);
-  animation:fadeUp 1s ease forwards;
-}
-
-@keyframes fadeUp{
-  from{opacity:0;transform:translateY(30px) scale(.95)}
-  to{opacity:1;transform:translateY(0) scale(1)}
-}
-
-/* ✍️ handwriting name */
-.name-draw{
-  font-family:'Great Vibes',cursive;
-  font-size:85px;
-  fill:none;
-  stroke:#ff9fff;
-  stroke-width:2.2;
-  stroke-linejoin:round;
-  stroke-linecap:round;
-  filter:drop-shadow(0 0 8px #ff00ff);
-  animation:draw 5s ease forwards, glow 2s infinite alternate;
-  display:none;
-}
-
-@keyframes draw{
-  from{stroke-dasharray:900;stroke-dashoffset:900;}
-  to{stroke-dasharray:900;stroke-dashoffset:0;}
-}
-
-@keyframes glow{
-  from{filter:drop-shadow(0 0 3px #ff00ff);}
-  to{filter:drop-shadow(0 0 18px #ff00ff);}
-}
-
-/* final big text */
-.big{
-  font-family:'Great Vibes',cursive;
-  font-size:90px;
-  color:#ffb6ff;
-  text-shadow:0 0 20px #ff4dff,0 0 40px #ff00ff;
-  display:none;
-  animation:pop 1.5s ease forwards;
-}
-
-@keyframes pop{
-  0%{opacity:0;transform:scale(0.4)}
-  70%{opacity:1;transform:scale(1.1)}
-  100%{transform:scale(1)}
-}
+  #startBtn{
+    position:absolute;
+    top:50%;left:50%;
+    transform:translate(-50%,-50%);
+    padding:15px 40px;
+    font-size:1.4em;
+    border:none;
+    border-radius:40px;
+    background:linear-gradient(90deg,#ff3b9b,#ff7eb3);
+    color:white;
+    cursor:pointer;
+    box-shadow:0 0 25px #ff7eb3;
+    font-weight:bold;
+    letter-spacing:1px;
+    transition:0.4s;
+  }
+  #startBtn:hover{transform:translate(-50%,-50%) scale(1.1);box-shadow:0 0 35px #ffb3d9;}
+  canvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none}
 </style>
+<!-- Copied from second code: fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
-
 <body>
 
-<!-- ⭐ NEW CINEMATIC BACKGROUND -->
 <div id="slideshow">
   <img src="1.jpg" class="active">
   <img src="2.jpg">
@@ -170,39 +80,21 @@ html,body{
   <div class="light-leak"></div>
 </div>
 
-<canvas id="fireCanvas"></canvas>
+<button id="startBtn">Start the Magic 💖</button>
+<audio id="bgMusic" src="sorry.mp3" loop></audio>
 
-<div class="center">
+<!-- Copied from second code: message div -->
+<div id="msg" class="message"></div>
 
-  <button id="startBtn" class="start-btn">
-    Start karo meri bbu 💖
-  </button>
-
-  <svg id="nameSvg" width="400" height="150" class="name-draw" viewBox="0 0 400 150">
-    <text x="50" y="100">Ishika</text>
-  </svg>
-
-  <div id="msg" class="message"></div>
-
-  <div id="final" class="big">
-    Happy New Year, Ishika 💖
-  </div>
-
-  <audio id="music" src="newyear.mp3"></audio>
+<div id="finalHeart"></div>
+<!-- Copied from second code: final big text -->
+<div id="final" class="big">
+  Tu Humesha Mere Sath Rahena..... <br>Ek kiss de de 💋<br>— Tumhara katik
 </div>
+<canvas id="fireworks"></canvas>
 
 <script>
-/* ⭐ background slideshow from 2nd code */
-let slideIndex=0;
-const slides=document.querySelectorAll("#slideshow img");
-
-setInterval(()=>{
-  slides[slideIndex].classList.remove("active");
-  slideIndex=(slideIndex+1)%slides.length;
-  slides[slideIndex].classList.add("active");
-},6000);
-
-/* messages */
+// Copied from second code: messages array, but updated for Ishika
 const lines=[
   "Ishika… tum ho to har pal khoobsurat lagta hai ✨",
   "Dil se nikalti ek hi dua — tum hamesha muskuraati raho ❤️",
@@ -210,95 +102,99 @@ const lines=[
   "Is saal nahi… har saal sirf tum hi tum 💫"
 ];
 
+const msg=document.getElementById("msg");
+const finalHeart=document.getElementById("finalHeart");
+const final=document.getElementById("final");
+const startBtn=document.getElementById("startBtn");
+const music=document.getElementById("bgMusic");
+
 let mIndex=0;
+let started=false;
 
-function startEverything(){
-
-  document.getElementById("startBtn").style.display="none";
-
-  let m=document.getElementById("music");
-  m.volume=0.9;
-  m.play().catch(()=>{});
-
-  const nameSvg=document.getElementById("nameSvg");
-  nameSvg.style.display="block";
-
-  setTimeout(()=>{
-    nameSvg.style.display="none";
-
-    let msg=document.getElementById("msg");
+// Modified showMessage to use second code's style: display messages with fadeUp, interval like second
+function showMessage(){
+  if(mIndex<lines.length){
+    msg.innerHTML=lines[mIndex];
     msg.style.display="block";
-
-    let messageInterval=setInterval(()=>{
-      if(mIndex<lines.length){
-        msg.innerHTML=lines[mIndex];
-        msg.style.animation="none";
-        void msg.offsetWidth;
-        msg.style.animation="fadeUp 1s ease forwards";
-        mIndex++;
-      }else{
-        msg.style.display="none";
-        document.getElementById("final").style.display="block";
-        clearInterval(messageInterval);
-      }
-    },7000);
-
-  },5200);
-
-  startFireworks();
+    msg.style.animation="none";
+    void msg.offsetWidth;
+    msg.style.animation="fadeUp 1s ease forwards";
+    for(let i=0;i<6;i++) setTimeout(spawnHeart, i*300);
+    mIndex++;
+    setTimeout(showMessage,7000); // adjusted to match second code's interval
+  }else{
+    setTimeout(showFinal,2500);
+  }
 }
 
-document.getElementById("startBtn").onclick=startEverything;
+function spawnHeart(){
+  const h=document.createElement("div");
+  h.className="heart";
+  h.style.left=(Math.random()*80+10)+"%";
+  h.style.bottom="0px";
+  h.textContent=["❤","💖","💕","💘"][Math.floor(Math.random()*4)];
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(),5000);
+}
 
-/* 🎆 fireworks (tumhare first code wale) */
-function startFireworks(){
-  const canvas=document.getElementById("fireCanvas");
-  const ctx=canvas.getContext("2d");
+// Slideshow
+let slideIndex=0;
+const slides=document.querySelectorAll("#slideshow img");
+setInterval(()=>{
+  slides[slideIndex].classList.remove("active");
+  slideIndex=(slideIndex+1)%slides.length;
+  slides[slideIndex].classList.add("active");
+},6000);
 
-  canvas.width=innerWidth;
-  canvas.height=innerHeight;
+// Final Heart + Fireworks, but final text now uses second code's big class
+function showFinal(){
+  finalHeart.style.transform="translate(-50%,-50%) scale(1)";
+  setTimeout(()=>{
+    final.style.display="block";
+    for(let i=0;i<12;i++) setTimeout(()=>spawnFirework(innerWidth/2,innerHeight/2), i*300);
+  },1200);
+}
 
-  let particles=[];
+// Fireworks from first code (kept same, as not specified to change)
+const canvas=document.getElementById("fireworks");
+const ctx=canvas.getContext("2d");
+canvas.width=innerWidth; canvas.height=innerHeight;
+let fireworks=[];
 
-  function Firework(x,y){
-    for(let i=0;i<60;i++){
-      particles.push({
-        x:x,y:y,
-        vx:(Math.random()-0.5)*6,
-        vy:(Math.random()-0.5)*6,
-        alpha:1,
-        size:Math.random()*2+1
-      });
-    }
+function spawnFirework(x,y){
+  const parts=[];
+  for(let i=0;i<40;i++){
+    const angle=Math.random()*2*Math.PI;
+    const speed=Math.random()*5+2;
+    parts.push({x,y,vx:Math.cos(angle)*speed,vy:Math.sin(angle)*speed,life:80,color:`hsl(${Math.random()*360},100%,60%)`});
   }
+  fireworks.push(parts);
+}
 
-  function animate(){
-    ctx.fillStyle="rgba(0,0,0,0.15)";
-    ctx.fillRect(0,0,canvas.width,canvas.height);
-
-    particles.forEach((p,i)=>{
-      p.x+=p.vx;
-      p.y+=p.vy;
-      p.alpha-=0.01;
-
-      ctx.beginPath();
-      ctx.globalAlpha=p.alpha;
-      ctx.arc(p.x,p.y,p.size,0,Math.PI*2);
-      ctx.fillStyle="rgb(255,200,255)";
+function drawFireworks(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  fireworks.forEach((fw)=>{
+    fw.forEach(p=>{
+      p.x+=p.vx; p.y+=p.vy; p.vy+=0.05; p.life--;
+      ctx.beginPath(); ctx.arc(p.x,p.y,2,0,2*Math.PI);
+      ctx.fillStyle=p.color; ctx.globalAlpha=Math.max(p.life/80,0);
       ctx.fill();
-
-      if(p.alpha<=0) particles.splice(i,1);
     });
-
-    requestAnimationFrame(animate);
-  }
-
-  setInterval(()=>{
-    Firework(Math.random()*canvas.width,Math.random()*canvas.height/1.3);
-  },700);
-
-  animate();
+  });
+  fireworks=fireworks.filter(fw=>fw.some(p=>p.life>0));
+  ctx.globalAlpha=1;
+  requestAnimationFrame(drawFireworks);
 }
+drawFireworks();
+
+// Start button click
+startBtn.addEventListener("click",()=>{
+  if(started) return;
+  started=true;
+  startBtn.style.display="none";
+  music.play();
+  showMessage();
+});
 </script>
 </body>
 </html>
